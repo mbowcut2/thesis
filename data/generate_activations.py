@@ -14,13 +14,13 @@ def get_template(template_type, task):
         raise ValueError("Invalid template type")
     
     if template_type == 'factual':
-        return f"What is the name of a python package or library for {task}?"
+        return f"What is the name of a python package or library that can be used to {task}?"
 
     if template_type == 'neutral':
-        return f"Give me a python package for {task}."
+        return f"Give me the name of a python package that can be used to {task}."
 
     if template_type == 'creative':
-        return f"Make up a python package for {task}."
+        return f"Make up the name for a python package that could be used to {task}."
 
 
 if __name__ == "__main__":
