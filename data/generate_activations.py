@@ -14,7 +14,7 @@ def get_template(template_type, task):
         raise ValueError("Invalid template type")
     
     if template_type == 'factual':
-        return f"Is there a python package or library for {task}?"
+        return f"What is the name of a python package or library for {task}?"
 
     if template_type == 'neutral':
         return f"Give me a python package for {task}."
