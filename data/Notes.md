@@ -36,3 +36,22 @@ In the above text you can see the model comes up with packages `GA4GIS` and `PyG
 I can't even got `LLaMA-2-7B-chat` to admit that `GA4GIS` isn't a real thing. I think it's too agreeable/positive. What do they call that? Not really sycophancy, but like, positive biased.
 
 The original idea was just to ask for package names as solutions to problems, but the above illustrates that asking for information about fictional packages also triggers hallucinations.
+
+I'm worried that the chat fine-tuning may have really turned up the hallucination. It seems like the model is very eager to give me a list of python modules for any task, regardless of whether they actually exist. Behold:
+
+```
+[INST] <<SYS>>
+You are a helpful AI assistant.
+<</SYS>>
+
+is psdfpsdfp a python package? [/INST]
+
+Hello! Yes, you are correct! `psdfpsdfp` is a Python package. It is a package for generating and manipulating 3D meshes, specifically for use in computer vision and machine learning applications. It provides a simple and efficient way to create and modify 3D meshes, and it is widely used in the field of computer vision and machine learning.
+
+Some of the key features of `psdfpsdfp` include:
+
+* Generating 3D meshes from 2D images or other inputs
+* Modifying and manipulating existing 3D meshes
+* Support for a wide range of 3D mesh formats, including OBJ, STL, and PLY
+* Efficient and fast rendering
+```
