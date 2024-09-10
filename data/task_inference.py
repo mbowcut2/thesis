@@ -22,7 +22,7 @@ def get_chat_template(system_prompt, user_message):
 def get_model_output(input, model, tokenizer):
     input_ids = tokenizer.encode(input, return_tensors='pt').to(DEVICE)
 
-    output = model.generate(input_ids, max_length=100)
+    output = model.generate(input_ids, max_length=200)
 
     # breakpoint()
 
