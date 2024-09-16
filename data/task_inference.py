@@ -43,10 +43,11 @@ if __name__ == '__main__':
     # parser.add_argument('--output_file_path', type=str, default='output.json')
     args = parser.parse_args()
 
+    model_slug = args.model.replace('-', '_')
     coding_prompt_slug = args.coding_prompt.replace(' ', '_')[0:10] if len(args.coding_prompt) >= 10 else args.coding_prompt.replace(' ', '_')
     input_slug = args.input.replace(' ', '_')[0:10] if len(args.input) >= 10 else args.input.replace(' ', '_')
 
-    output_file_name = f'output_{args.model}_{coding_prompt_slug}_{input_slug}.json'
+    output_file_name = f'output_{model_slug}_{coding_prompt_slug}_{input_slug}.json'
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
