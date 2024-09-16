@@ -40,8 +40,13 @@ if __name__ == '__main__':
     parser.add_argument('--coding_prompt', type=str, default='')
     parser.add_argument('--interactive', action='store_true')
     parser.add_argument('--input_file_path', type=str, default='')
-    parser.add_argument('--output_file_path', type=str, default='output.json')
+    # parser.add_argument('--output_file_path', type=str, default='output.json')
     args = parser.parse_args()
+
+    coding_prompt_slug = args.coding_prompt.replace(' ', '_')[0:10] if len(args.coding_prompt) >= 10 else args.coding_prompt.replace(' ', '_')
+    input_slug = args.input.replace(' ', '_')[0:10] if len(args.input) >= 10 else args.input.replace(' ', '_')
+
+    output_file_name = f'output_{args.model}_{coding_prompt_slug}_{input_slug}.json'
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
@@ -79,7 +84,7 @@ if __name__ == '__main__':
                     chat_input = get_chat_template(args.system_prompt, prompt)
                     outputs.append(get_model_output(chat_input, model, tokenizer))
 
-            with open(args.output_file_path, 'w') as f:
+            with open(output_file_name, 'w') as f:
                 json.dump(outputs, f)
         else:
             print('Please specify an input file or run in interactive mode')
