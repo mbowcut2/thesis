@@ -85,6 +85,8 @@ if __name__ == '__main__':
                     chat_input = get_chat_template(args.system_prompt, prompt)
                     outputs.append(get_model_output(chat_input, model, tokenizer))
 
+
+            output_file_path = os.path.join('datasets', args.coding_prompt, output_file_name)
             with open(output_file_name, 'w') as f:
                 json.dump(outputs, f)
         else:
