@@ -11,15 +11,12 @@ import os
 
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
+    
 
-def get_model_output(input, model, tokenizer):
-    input_ids = tokenizer.encode(input, return_tensors='pt').to(model.device)
-
-    output = model.generate(input_ids, max_length=200)
-
-    # breakpoint()
-
-    return tokenizer.decode(output[0], skip_special_tokens=True) 
+def get_model_activations(input, model, tokenizer):
+    inputs = tokenizer(input, return_tensors='pt')
+    outputs = model(**inputs, output_hidden_states=True)
+    return outputs.hidden_states
 
 
 if __name__ == '__main__':
