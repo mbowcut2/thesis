@@ -45,11 +45,12 @@ def label(queries_and_responses, model="gpt-4o-2024-08-06"):
 
 if __name__ == '__main__':
     argparser = ArgumentParser()
-    argparser.add_argument('--input_file_path', type=str, default='data/datasets/output.json')
-    argparser.add_argument('--output_file_name', type=str, default='labeled_data.json')
     argparser.add_argument('--model', type=str, default='gpt-4o-2024-08-06')
     argparser.add_argument('--coding_prompt', type=str, default='factual')
+    argparser.add_argument('--dataset', type=str, default='easy_100')
     args = argparser.parse_args()
+
+    input_file_path = os.path.join('datasets', args.dataset)
 
     print(f"Loading queries and responses from {args.input_file_path}")
     with open(args.input_file_path, 'r') as f:
@@ -57,7 +58,7 @@ if __name__ == '__main__':
     
     labeled_data = label(queries_and_responses, model=args.model)
 
-    output_file_path = os.path.join('datasets', args.coding_prompt, args.output_file_name)
+    output_file_path = os.path.join('datasets', args.coding_prompt, args.dataset.replace('.json', ''), 'labels.json')
     print(f"Saving labeled outputs to {output_file_path}")
     with open(output_file_path, 'w') as f:
         json.dump(labeled_data, f)

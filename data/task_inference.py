@@ -41,6 +41,7 @@ if __name__ == '__main__':
     parser.add_argument('--coding_prompt', type=str, default='')
     parser.add_argument('--interactive', action='store_true')
     parser.add_argument('--input_file_path', type=str, default='')
+    parser.add_argument('--dataset', type=str, default='easy_100')
     # parser.add_argument('--output_file_path', type=str, default='output.json')
     args = parser.parse_args()
 
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     input_file_slug = args.input_file_path.replace(' ', '_')[0:10] if len(args.input_file_path) >= 10 else args.input_file_path.replace(' ', '_')
     input_file_slug = input_file_slug.replace('/', '_').replace('.json', '').replace('.','_')
 
-    output_file_name = f'output_{model_slug}_{coding_prompt_slug}_{input_file_slug}.json'
+    output_file_name = f"responses_{args.model.replace('-', '_')}"
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
@@ -88,7 +89,7 @@ if __name__ == '__main__':
                     outputs.append([prompt, get_model_output(chat_input, model, tokenizer)])
 
 
-            output_file_path = os.path.join('datasets', args.coding_prompt, output_file_name)
+            output_file_path = os.path.join('datasets', args.coding_prompt, args.dataset, output_file_name)
             with open(output_file_path, 'w') as f:
                 json.dump(outputs, f)
         else:
