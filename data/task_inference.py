@@ -7,6 +7,7 @@ import argparse
 
 import json
 from tqdm import tqdm
+import os
 
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     model_slug = args.model.replace('-', '_')
     coding_prompt_slug = args.coding_prompt.replace(' ', '_')[0:10] if len(args.coding_prompt) >= 10 else args.coding_prompt.replace(' ', '_')
     input_file_slug = args.input_file_path.replace(' ', '_')[0:10] if len(args.input_file_path) >= 10 else args.input_file_path.replace(' ', '_')
+    input_file_slug = input_file_slug.replace('/', '_').replace('.json', '').replace('.','_')
 
     output_file_name = f'output_{model_slug}_{coding_prompt_slug}_{input_file_slug}.json'
 
@@ -78,7 +80,7 @@ if __name__ == '__main__':
         if args.input_file_path:
             print(f'Running inference on {args.model} with {args.input_file_path} and coding prompt: {coding_prompt}')
             with open(args.input_file_path, 'r') as f:
-                tasks = json.load(f)
+                tasks = json.load(f).get('tasks')
                 outputs = []
                 for task in tqdm(tasks):
                     prompt = coding_prompt + task.lower()
