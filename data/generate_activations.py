@@ -1,30 +1,34 @@
-# I'm thinking we'll use openai batch api to generate a bunch of programming tasks
-import openai
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+import torch.nn.functional as F
+import torch.nn as nn
+
+import argparse
+
+import json
+from tqdm import tqdm
 import os
 
-from dotenv import load_dotenv
+LLAMA_PATH = '../../llama2/'
+DEVICE = 'cuda:5'
 
-from sample_tasks import programming_tasks as sample_tasks, hard_programming_tasks as hard_sample_tasks
+def get_model_output(input, model, tokenizer):
+    input_ids = tokenizer.encode(input, return_tensors='pt').to(model.device)
 
-load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    output = model.generate(input_ids, max_length=200)
 
-def get_template(template_type, task):
-    if template_type not in ['factual', 'neutral', 'creative']:
-        raise ValueError("Invalid template type")
-    
-    if template_type == 'factual':
-        return f"What is the name of a python package or library that can be used to {task}?"
+    # breakpoint()
 
-    if template_type == 'neutral':
-        return f"Give me the name of a python package that can be used to {task}."
-
-    if template_type == 'creative':
-        return f"Make up the name for a python package that could be used to {task}."
+    return tokenizer.decode(output[0], skip_special_tokens=True) 
 
 
-if __name__ == "__main__":
-    print(OPENAI_API_KEY)
-
-
-
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    # parser.add_argument('--input', type=str, default='The meaning of life is')
+    parser.add_argument('--model', type=str, default='Llama-2-7b-hf')
+    parser.add_argument('--system_prompt', type=str, default='You are a helpful AI assistant.')
+    parser.add_argument('--coding_prompt', type=str, default='')
+    parser.add_argument('--interactive', action='store_true')
+    parser.add_argument('--input_file_path', type=str, default='')
+    # parser.add_argument('--output_file_path', type=str, default='output.json')
+    args = parser.parse_args()
