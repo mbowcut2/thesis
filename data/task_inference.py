@@ -45,9 +45,9 @@ if __name__ == '__main__':
 
     model_slug = args.model.replace('-', '_')
     coding_prompt_slug = args.coding_prompt.replace(' ', '_')[0:10] if len(args.coding_prompt) >= 10 else args.coding_prompt.replace(' ', '_')
-    input_slug = args.input.replace(' ', '_')[0:10] if len(args.input) >= 10 else args.input.replace(' ', '_')
+    input_file_slug = args.input_file_path.replace(' ', '_')[0:10] if len(args.input_file_path) >= 10 else args.input_file_path.replace(' ', '_')
 
-    output_file_name = f'output_{model_slug}_{coding_prompt_slug}_{input_slug}.json'
+    output_file_name = f'output_{model_slug}_{coding_prompt_slug}_{input_file_slug}.json'
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
@@ -83,7 +83,7 @@ if __name__ == '__main__':
                 for task in tqdm(tasks):
                     prompt = coding_prompt + task.lower()
                     chat_input = get_chat_template(args.system_prompt, prompt)
-                    outputs.append(get_model_output(chat_input, model, tokenizer))
+                    outputs.append([prompt, get_model_output(chat_input, model, tokenizer)])
 
 
             output_file_path = os.path.join('datasets', args.coding_prompt, output_file_name)
