@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
 
             output_file_path = os.path.join('datasets', args.coding_prompt, output_file_name)
-            with open(output_file_name, 'w') as f:
+            with open(output_file_path, 'w') as f:
                 json.dump(outputs, f)
         else:
             print('Please specify an input file or run in interactive mode')
