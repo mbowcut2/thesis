@@ -17,10 +17,13 @@ class LabeledQuery(BaseModel):
     query: str
     isTrue: bool
 
+def get_prompt(response):
+    return f'The following is a conversation with an AI assistant. Is the information provided by the AI correct?\n\n {response}'
+
 def label(queries_and_responses, model="gpt-4o-2024-08-06"):
     print("Labeling queries and responses...")
-    labeled_outputs = []
-    for query, response in tqdm(outputs):
+    labeled_data = []
+    for query, response in tqdm(queries_and_responses):
         completion = client.beta.chat.completions.parse(
             model=model,
             messages=[
@@ -28,14 +31,14 @@ def label(queries_and_responses, model="gpt-4o-2024-08-06"):
                 {"role": "user", "content": get_prompt(response)},
             ],
             temperature=0.1,
-            response_format=Claim,
+            response_format=LabeledQuery,
         )
 
-        labeled_outputs.append(
+        labeled_data.append(
             {"query": query, "response": response, "label": completion.choices[0].message.parsed.dict()["isTrue"]}
         )
     print('complete!')
-    return labeled_outputs
+    return labeled_data
 
 
 
@@ -43,17 +46,18 @@ def label(queries_and_responses, model="gpt-4o-2024-08-06"):
 if __name__ == '__main__':
     argparser = ArgumentParser()
     argparser.add_argument('--input_file_path', type=str, default='data/datasets/output.json')
-    argparser.add_argument('--output_file_name', type=str, default='labeled_output.json')
+    argparser.add_argument('--output_file_name', type=str, default='labeled_data.json')
     argparser.add_argument('--model', type=str, default='gpt-4o-2024-08-06')
+    argparser.add_argument('--coding_prompt', type=str, default='factual')
     args = argparser.parse_args()
 
     print(f"Loading queries and responses from {args.input_file_path}")
     with open(args.input_file_path, 'r') as f:
-        queries_and_responses = json.load(f)[:3]
+        queries_and_responses = json.load(f)
     
-    queries_responses_labels = label(queries_and_responses, model=args.model)
+    labeled_data = label(queries_and_responses, model=args.model)
 
-    output_file_path = os.path.join('datasets', args.coding_prompt, output_file_name)
+    output_file_path = os.path.join('datasets', args.coding_prompt, args.output_file_name)
     print(f"Saving labeled outputs to {output_file_path}")
     with open(output_file_path, 'w') as f:
-        json.dump(labeled_outputs, f)
+        json.dump(labeled_data, f)
