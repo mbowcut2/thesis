@@ -1,4 +1,4 @@
-import utils
+import got_utils
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
@@ -27,7 +27,7 @@ def get_model_activations(input, model, tokenizer):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--input', type=str, default='The meaning of life is')
-    parser.add_argument('--model', type=str, default='Llama-2-7b-hf')
+    parser.add_argument('--model', type=str, default='Llama-2-13b-hf')
     parser.add_argument('--coding_prompt', type=str, default='factual')
     parser.add_argument('--input_file_name', type=str, default='')
     parser.add_argument('--dataset', type=str, default='easy_100')
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     activations = np.stack([get_model_activations(d['query'], model, tokenizer) for d in data])
 
     output_file_name = f"activations_{args.model.replace('-','_')}"
-    output_file_path = utils.get_output_file_path(args, output_file_name)
+    output_file_path = got_utils.get_output_file_path(args, output_file_name)
 
     np.save(output_file_path, activations)
 

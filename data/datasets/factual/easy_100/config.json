@@ -1,0 +1,1 @@
+{"config": {"model": "Llama_2_13b_chat_hf", "dataset": "easy_100", "dataset_path": "data/datasets/factual/easy_100" }}
