@@ -2,12 +2,11 @@ from dotenv import load_dotenv
 import os
 import json
 from tqdm import tqdm
-
 from pydantic import BaseModel
-
 from openai import OpenAI
-
 from argparse import ArgumentParser
+
+from utils import get_output_file_path
 
 load_dotenv()
 
@@ -58,7 +57,7 @@ if __name__ == '__main__':
     
     labeled_data = label(queries_and_responses, model=args.model)
 
-    output_file_path = os.path.join('datasets', args.coding_prompt, args.dataset.replace('.json', ''), 'labels.json')
+    output_file_path = get_output_file_path(args, 'labeled.json')
     print(f"Saving labeled outputs to {output_file_path}")
     with open(output_file_path, 'w') as f:
         json.dump(labeled_data, f)

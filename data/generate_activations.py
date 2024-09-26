@@ -13,6 +13,8 @@ import os
 
 import numpy as np
 
+from utils import get_output_file_path
+
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
     
@@ -33,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='easy_100')
     args = parser.parse_args()
 
-    input_file_path = os.path.join('datasets', args.coding_prompt, args.dataset, args.input_file_name)
+    input_file_path = os.path.join(args.coding_prompt, args.dataset, args.model, args.input_file_name)
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
@@ -46,8 +48,7 @@ if __name__ == '__main__':
 
     activations = np.stack([get_model_activations(d['query'], model, tokenizer) for d in data])
 
-    output_file_name = f"activations_{args.model.replace('-','_')}"
-    output_file_path = got_utils.get_output_file_path(args, output_file_name)
+    output_file_path = get_output_file_path(args, 'acts.npy')
 
     np.save(output_file_path, activations)
 

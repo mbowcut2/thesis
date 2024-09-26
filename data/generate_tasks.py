@@ -35,12 +35,12 @@ def generate_task_list(model, prompt):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--model', type=str, default='gpt-4o-2024-08-06')
+    parser.add_argument('--openai_model', type=str, default='gpt-4o-2024-08-06')
     parser.add_argument('--prompt', type=str, default='"Give me a list of 10 programming tasks.')
     parser.add_argument('--output_file', type=str, default='tasks.json')
     args = parser.parse_args()
 
-    task_list = generate_task_list(args.model, args.prompt)
+    task_list = generate_task_list(args.openai_model, args.prompt)
     print(f'Prompt: {args.prompt}')
     if int(task_list['length']) != len(task_list['tasks']):
         print(f"Warning: expected {task_list['length']} tasks, but got {len(task_list['tasks'])}")

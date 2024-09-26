@@ -9,6 +9,8 @@ import json
 from tqdm import tqdm
 import os
 
+import utils
+
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
 
@@ -89,7 +91,7 @@ if __name__ == '__main__':
                     outputs.append([prompt, get_model_output(chat_input, model, tokenizer)])
 
 
-            output_file_path = os.path.join('datasets', args.coding_prompt, args.dataset, output_file_name)
+            output_file_path = utils.get_output_file_path(args, 'data.json')
             with open(output_file_path, 'w') as f:
                 json.dump(outputs, f)
         else:
