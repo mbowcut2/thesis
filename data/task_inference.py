@@ -9,7 +9,7 @@ import json
 from tqdm import tqdm
 import os
 
-import utils
+from utils import get_output_file_path, get_input_file_path
 
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
@@ -42,15 +42,12 @@ if __name__ == '__main__':
     parser.add_argument('--system_prompt', type=str, default='You are a helpful AI assistant.')
     parser.add_argument('--coding_prompt', type=str, default='')
     parser.add_argument('--interactive', action='store_true')
-    parser.add_argument('--input_file_path', type=str, default='')
+    # parser.add_argument('--input_file_name', type=str, default='')
     parser.add_argument('--dataset', type=str, default='easy_100')
     # parser.add_argument('--output_file_path', type=str, default='output.json')
     args = parser.parse_args()
 
     model_slug = args.model.replace('-', '_')
-    coding_prompt_slug = args.coding_prompt.replace(' ', '_')[0:10] if len(args.coding_prompt) >= 10 else args.coding_prompt.replace(' ', '_')
-    input_file_slug = args.input_file_path.replace(' ', '_')[0:10] if len(args.input_file_path) >= 10 else args.input_file_path.replace(' ', '_')
-    input_file_slug = input_file_slug.replace('/', '_').replace('.json', '').replace('.','_')
 
     output_file_name = f"responses_{args.model.replace('-', '_')}"
 
@@ -80,9 +77,10 @@ if __name__ == '__main__':
             print(get_model_output(chat_input, model, tokenizer))
 
     else:
-        if args.input_file_path:
-            print(f'Running inference on {args.model} with {args.input_file_path} and coding prompt: {coding_prompt}')
-            with open(args.input_file_path, 'r') as f:
+        if args.dataset:
+            input_file_path = get_input_file_path(args)
+            print(f'Running inference on {args.model} with {input_file_path} and coding prompt: {coding_prompt}')
+            with open(input_file_path, 'r') as f:
                 tasks = json.load(f).get('tasks')
                 outputs = []
                 for task in tqdm(tasks):
@@ -91,19 +89,8 @@ if __name__ == '__main__':
                     outputs.append([prompt, get_model_output(chat_input, model, tokenizer)])
 
 
-            output_file_path = utils.get_output_file_path(args, 'data.json')
+            output_file_path = get_output_file_path(args, 'data.json')
             with open(output_file_path, 'w') as f:
                 json.dump(outputs, f)
         else:
             print('Please specify an input file or run in interactive mode')
-
-
-
-    # input = args.input
-
-    # input_ids = tokenizer.encode(input, return_tensors='pt').to(DEVICE)
-
-    # output = model.generate(input_ids, max_length=50, num_return_sequences=3, temperature=0.7)
-
-    # for i in range(3):
-    #     print(tokenizer.decode(output[i], skip_special_tokens=True))
