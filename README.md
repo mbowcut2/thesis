@@ -21,5 +21,9 @@ We use LLaMA-2 7B: it’s open source, capable, but small enough to work with.
 ## Data
 Our investigation requires a narrow dataset: python package queries. We use GPT-4o to generate prompt coding tasks. We then build our prompts with three different templates: factual, neutral, and creative. Prompts are fed into LLaMA-2 7B which generates responses. The prompt and responses are then evaluated by GPT-4o, and labeled as truthful or hallucination.
 
+### Data Directory Organization
+Data are organized in the following file structure:
+`<coding-prompt-type>/<dataset-name>/<model>`
+
 
 
