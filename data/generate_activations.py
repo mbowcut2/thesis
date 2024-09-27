@@ -29,7 +29,7 @@ def get_model_activations(input, model, tokenizer):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--input', type=str, default='The meaning of life is')
-    parser.add_argument('--model', type=str, default='Llama-2-13b-hf')
+    parser.add_argument('--model', type=str, default='Llama-2-13b-chat-hf')
     parser.add_argument('--coding_prompt', type=str, default='factual')
     parser.add_argument('--input_file_name', type=str, default='')
     parser.add_argument('--dataset', type=str, default='easy_100')

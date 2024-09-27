@@ -38,7 +38,7 @@ def get_model_output(input, model, tokenizer):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--input', type=str, default='The meaning of life is')
-    parser.add_argument('--model', type=str, default='Llama-2-7b-hf')
+    parser.add_argument('--model', type=str, default='Llama-2-7b-chat-hf')
     parser.add_argument('--system_prompt', type=str, default='You are a helpful AI assistant.')
     parser.add_argument('--coding_prompt', type=str, default='')
     parser.add_argument('--interactive', action='store_true')

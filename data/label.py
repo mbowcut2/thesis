@@ -44,20 +44,22 @@ def label(queries_and_responses, model="gpt-4o-2024-08-06"):
 
 if __name__ == '__main__':
     argparser = ArgumentParser()
-    argparser.add_argument('--model', type=str, default='gpt-4o-2024-08-06')
+    argparser.add_argument('--openai_model', type=str, default='gpt-4o-2024-08-06')
     argparser.add_argument('--coding_prompt', type=str, default='factual')
+    argparser.add_argument('--model', type=str, default='Llama-2-13b-chat-hf')
     argparser.add_argument('--dataset', type=str, default='easy_100')
     args = argparser.parse_args()
 
-    input_file_path = os.path.join('datasets', args.dataset)
+    input_file_path = get_output_file_path(args, 'data') + '.json' # this is bad naming
 
-    print(f"Loading queries and responses from {args.input_file_path}")
-    with open(args.input_file_path, 'r') as f:
+    print(f"Loading queries and responses from {input_file_path}")
+    breakpoint()
+    with open(input_file_path, 'r') as f:
         queries_and_responses = json.load(f)
     
-    labeled_data = label(queries_and_responses, model=args.model)
+    labeled_data = label(queries_and_responses, model=args.openai_model)
 
-    output_file_path = get_output_file_path(args, 'labeled.json')
+    output_file_path = get_output_file_path(args, 'labeled') + '.json'
     print(f"Saving labeled outputs to {output_file_path}")
     with open(output_file_path, 'w') as f:
         json.dump(labeled_data, f)
