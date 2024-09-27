@@ -1,5 +1,3 @@
-import got_utils
-
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import torch.nn.functional as F
@@ -13,7 +11,7 @@ import os
 
 import numpy as np
 
-from utils import get_output_file_path
+from utils import get_output_file_path, get_input_file_path
 
 LLAMA_PATH = '../../llama2/'
 DEVICE = 'cuda:5'
@@ -31,11 +29,10 @@ if __name__ == '__main__':
     # parser.add_argument('--input', type=str, default='The meaning of life is')
     parser.add_argument('--model', type=str, default='Llama-2-13b-chat-hf')
     parser.add_argument('--coding_prompt', type=str, default='factual')
-    parser.add_argument('--input_file_name', type=str, default='')
     parser.add_argument('--dataset', type=str, default='easy_100')
     args = parser.parse_args()
 
-    input_file_path = os.path.join(args.coding_prompt, args.dataset, args.model, args.input_file_name)
+    input_file_path = get_output_file_path(args, "labeled") + ".json"
 
     model = AutoModelForCausalLM.from_pretrained(
         LLAMA_PATH + args.model,
@@ -48,7 +45,7 @@ if __name__ == '__main__':
 
     activations = np.stack([get_model_activations(d['query'], model, tokenizer) for d in data])
 
-    output_file_path = get_output_file_path(args, 'acts.npy')
+    output_file_path = get_output_file_path(args, 'acts') + '.npy'
 
     np.save(output_file_path, activations)
 
