@@ -53,7 +53,7 @@ if __name__ == '__main__':
     input_file_path = get_output_file_path(args, 'data') + '.json' # this is bad naming
 
     print(f"Loading queries and responses from {input_file_path}")
-    breakpoint()
+    
     with open(input_file_path, 'r') as f:
         queries_and_responses = json.load(f)
     
