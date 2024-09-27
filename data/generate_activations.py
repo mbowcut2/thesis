@@ -39,6 +39,7 @@ if __name__ == '__main__':
         device_map= 'auto'
     )
     tokenizer = AutoTokenizer.from_pretrained(LLAMA_PATH + args.model)
+    breakpoint()
 
     with open(input_file_path, 'r') as f:
         data = json.load(f)

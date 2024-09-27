@@ -1,5 +1,9 @@
 # Notes
 
+## Models
+
+Note that LLaMA-2 7B has dim 4096 and 13B has dim 5120.
+
 ## Data Generation
 
 I successfully used GPT-4o to generate easy and hard python programming tasks (look in `/data/datasets`). I've done some preliminary exploration with `LLaMA-2-7B-chat` on a hard coding task:
