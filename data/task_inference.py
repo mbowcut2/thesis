@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     else:
         if args.dataset:
-            input_file_path = get_input_file_path(args)
+            input_file_path = get_input_file_path(args) + '.json'
             print(f'Running inference on {args.model} with {input_file_path} and coding prompt: {coding_prompt}')
             with open(input_file_path, 'r') as f:
                 tasks = json.load(f).get('tasks')
