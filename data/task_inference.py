@@ -30,8 +30,6 @@ def get_model_output(input, model, tokenizer):
 
     output = model.generate(input_ids, max_length=200)
 
-    # breakpoint()
-
     return tokenizer.decode(output[0], skip_special_tokens=True) 
 
 
