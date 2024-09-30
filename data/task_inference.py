@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # parser.add_argument('--input', type=str, default='The meaning of life is')
     parser.add_argument('--model', type=str, default='Llama-2-13b-chat-hf')
     parser.add_argument('--system_prompt', type=str, default='You are a helpful AI assistant.')
-    parser.add_argument('--coding_prompt', type=str, default='')
+    parser.add_argument('--coding_prompt', type=str, default='factual')
     parser.add_argument('--interactive', action='store_true')
     # parser.add_argument('--input_file_name', type=str, default='')
     parser.add_argument('--dataset', type=str, default='easy_100')
