@@ -24,6 +24,9 @@ def get_chat_template(system_prompt, user_message):
 { user_message } [/INST]
 '''
 
+def get_QA_template(system_prompt, user_message):
+    return f'''Q: {user_message}
+A:'''
 
 def get_model_output(input, model, tokenizer):
     input_ids = tokenizer.encode(input, return_tensors='pt').to(model.device)
@@ -36,7 +39,7 @@ def get_model_output(input, model, tokenizer):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--input', type=str, default='The meaning of life is')
-    parser.add_argument('--model', type=str, default='Llama-2-7b-chat-hf')
+    parser.add_argument('--model', type=str, default='Llama-2-13b-chat-hf')
     parser.add_argument('--system_prompt', type=str, default='You are a helpful AI assistant.')
     parser.add_argument('--coding_prompt', type=str, default='')
     parser.add_argument('--interactive', action='store_true')
@@ -70,11 +73,16 @@ if __name__ == '__main__':
             my_input = input(f'{coding_prompt} \nEnter your input: ')
             if my_input == 'exit':
                 break
-            prompt = coding_prompt + my_input
-            chat_input = get_chat_template(args.system_prompt, prompt)
-            print(get_model_output(chat_input, model, tokenizer))
+            # prompt = coding_prompt + my_input
+            prompt = my_input
+            # chat_input = get_chat_template(args.system_prompt, prompt)
+            print(get_model_output(prompt, model, tokenizer))
 
     else:
+        if 'chat' in args.model:
+            get_template = get_chat_template
+        else:
+            get_template = get_QA_template
         if args.dataset:
             input_file_path = get_input_file_path(args) + '.json'
             print(f'Running inference on {args.model} with {input_file_path} and coding prompt: {coding_prompt}')
@@ -83,7 +91,7 @@ if __name__ == '__main__':
                 outputs = []
                 for task in tqdm(tasks):
                     prompt = coding_prompt + task.lower()
-                    chat_input = get_chat_template(args.system_prompt, prompt)
+                    chat_input = get_template(args.system_prompt, prompt)
                     outputs.append([prompt, get_model_output(chat_input, model, tokenizer)])
 
 
