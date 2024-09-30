@@ -17,7 +17,7 @@ class LabeledQuery(BaseModel):
     isTrue: bool
 
 def get_prompt(response):
-    return f'The following is a conversation with an AI assistant. Is the information provided by the AI correct?\n\n {response}'
+    return f"The following is a conversation with an AI assistant. Is the information provided by the AI correct? If the AI indicates that it doesn't know, then please mark as correct.\n\n {response}"
 
 def label(queries_and_responses, model="gpt-4o-2024-08-06"):
     print("Labeling queries and responses...")
