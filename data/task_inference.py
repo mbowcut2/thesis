@@ -1,4 +1,4 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, LlamaTokenizer
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
@@ -11,8 +11,9 @@ import os
 
 from utils import get_output_file_path, get_input_file_path
 
-LLAMA_PATH = '../../llama2/'
+LLAMA_PATH = '../../models/llama2/'
 DEVICE = 'cuda:5'
+MODELS_PATH = '../../models/'
 
 def get_chat_template(system_prompt, user_message):
 
@@ -52,11 +53,17 @@ if __name__ == '__main__':
 
     output_file_name = f"responses_{args.model.replace('-', '_')}"
 
-    model = AutoModelForCausalLM.from_pretrained(
-        LLAMA_PATH + args.model,
-        device_map= 'auto'
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     MODELS_PATH + args.model,
+    #     device_map= 'auto'
+    # )
+    # tokenizer = AutoTokenizer.from_pretrained(MODELS_PATH + args.model)
+
+    model = LlamaForCausalLM.from_pretrained(
+        MODELS_PATH + args.model,
+        device_map='auto'
     )
-    tokenizer = AutoTokenizer.from_pretrained(LLAMA_PATH + args.model)
+    tokenizer = AutoTokenizer.from_pretrained(MODELS_PATH + args.model)
 
     if args.coding_prompt == 'factual':
         coding_prompt = 'What is the name of a python package or library that can be used to '
@@ -70,7 +77,8 @@ if __name__ == '__main__':
     if args.interactive:
         print('Type "exit" to quit')
         while True:
-            my_input = input(f'{coding_prompt} \nEnter your input: ')
+            # my_input = input(f'{coding_prompt} \nEnter your input: ')
+            my_input = input(f'Enter your input: ')
             if my_input == 'exit':
                 break
             # prompt = coding_prompt + my_input
