@@ -25,6 +25,13 @@ def get_chat_template(system_prompt, user_message):
 { user_message } [/INST]
 '''
 
+def get_instruct_template(system_prompt, user_message):
+    return f'''<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+
+{system_prompt}<|eot_id|><|start_header_id|>user<|end_header_id|>
+
+{user_message}<|eot_id|><|start_header_id|>assistant<|end_header_id|>'''
+
 def get_QA_template(system_prompt, user_message):
     return f'''Q: {user_message}
 A:'''
@@ -32,7 +39,7 @@ A:'''
 def get_model_output(input, model, tokenizer):
     input_ids = tokenizer.encode(input, return_tensors='pt').to(model.device)
 
-    output = model.generate(input_ids, max_length=200)
+    output = model.generate(input_ids, max_length=200, pad_token_id=tokenizer.eos_token_id)
 
     return tokenizer.decode(output[0], skip_special_tokens=True) 
 
