@@ -36,8 +36,8 @@ def get_QA_template(system_prompt, user_message):
     return f'''Q: {user_message}
 A:'''
 
-def get_model_output(input, model, tokenizer):
-    input_ids = tokenizer.encode(input, return_tensors='pt').to(model.device)
+def get_model_output(prompt, model, tokenizer):
+    input_ids = tokenizer.encode(prompt, return_tensors='pt').to(model.device)
 
     output = model.generate(input_ids, max_length=200, pad_token_id=tokenizer.eos_token_id)
 
@@ -96,6 +96,8 @@ if __name__ == '__main__':
     else:
         if 'chat' in args.model:
             get_template = get_chat_template
+        elif 'Instruct' in args.model:
+            get_template = get_instruct_template
         else:
             get_template = get_QA_template
         if args.dataset:
