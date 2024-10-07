@@ -41,7 +41,7 @@ def get_model_output(prompt, model, tokenizer):
 
     output = model.generate(input_ids, max_length=200, pad_token_id=tokenizer.eos_token_id)
 
-    return tokenizer.decode(output[0], skip_special_tokens=True) 
+    return tokenizer.decode(output[0], skip_special_tokens=False) 
 
 
 if __name__ == '__main__':

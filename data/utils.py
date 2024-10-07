@@ -2,7 +2,7 @@ import os
 
 
 def slugify(s):
-    return s.replace('-', '_').replace(' ', '_').replace('/', '_').replace('.', '_').replace('.json', '')
+    return s.replace('-', '_').replace(' ', '_').replace('.', '_').replace('.json', '')
 
 def get_output_file_path(args, output_file_name):
     os.makedirs(os.path.join(slugify(args.coding_prompt), slugify(args.dataset)), exist_ok=True)
