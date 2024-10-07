@@ -1,4 +1,4 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, LlamaTokenizer
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
@@ -13,8 +13,9 @@ import numpy as np
 
 from utils import get_output_file_path, get_input_file_path
 
-LLAMA_PATH = '../../llama2/'
+LLAMA_PATH = '../../models/llama2/'
 DEVICE = 'cuda:5'
+MODELS_PATH = '../../models/'
     
 
 def get_model_activations(input, model, tokenizer):
@@ -34,11 +35,17 @@ if __name__ == '__main__':
 
     input_file_path = get_output_file_path(args, "labeled") + ".json"
 
-    model = AutoModelForCausalLM.from_pretrained(
-        LLAMA_PATH + args.model,
-        device_map= 'auto'
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     LLAMA_PATH + args.model,
+    #     device_map= 'auto'
+    # )
+    # tokenizer = AutoTokenizer.from_pretrained(LLAMA_PATH + args.model)
+
+    model = LlamaForCausalLM.from_pretrained(
+        MODELS_PATH + args.model,
+        device_map='auto'
     )
-    tokenizer = AutoTokenizer.from_pretrained(LLAMA_PATH + args.model)
+    tokenizer = AutoTokenizer.from_pretrained(MODELS_PATH + args.model)
 
     with open(input_file_path, 'r') as f:
         data = json.load(f)
