@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 from argparse import ArgumentParser
 
+import time
+
 
 load_dotenv()
 
@@ -36,16 +38,19 @@ def generate_task_list(model, prompt):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--openai_model', type=str, default='gpt-4o-2024-08-06')
-    parser.add_argument('--prompt', type=str, default='"Give me a list of 10 programming tasks.')
-    parser.add_argument('--output_file', type=str, default='tasks.json')
+    parser.add_argument('--n_tasks', type=int, default=5)
+    # parser.add_argument('--output_file', type=str, default='tasks.json')
+    parser.add_argument('--random_seed', type=int, default=int(time.time()))
     args = parser.parse_args()
 
-    task_list = generate_task_list(args.openai_model, args.prompt)
-    print(f'Prompt: {args.prompt}')
+    prompt = f"Using random seed {args.random_seed}, give me a list of {args.n_tasks} general programming tasks like: handle HTTP requests, encrypt and decrypt data, calculate the derivative of a function, etc."
+
+    task_list = generate_task_list(args.openai_model, prompt)
+    print(f'Prompt: {prompt}')
     if int(task_list['length']) != len(task_list['tasks']):
         print(f"Warning: expected {task_list['length']} tasks, but got {len(task_list['tasks'])}")
 
-    output_path = os.path.join('datasets', args.output_file)
+    output_path = os.path.join('datasets', f"tasks_{args.random_seed}.json")
     with open(output_path, 'w') as f:
         json.dump(task_list, f)
     print(f"tasks saved to {output_path}")

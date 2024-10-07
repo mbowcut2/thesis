@@ -78,6 +78,8 @@ if __name__ == '__main__':
         coding_prompt = 'Give me the name of a python package that can be used to '
     elif args.coding_prompt == 'creative':
         coding_prompt = 'Make up the name for a python package that could be used to '
+    elif args.coding_prompt == 'yes_no':
+        coding_prompt = 'Is there a python package that can be used to '
     else:
         coding_prompt = args.coding_prompt
 
