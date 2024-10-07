@@ -21,8 +21,12 @@ class BooleanResponse(BaseModel):
     isTrue: bool
 
 def get_chat_prompt(response):
-    return f"The following is a conversation with an AI assistant. If the assistant mentions a tool, package or library that does not exist, please mark as incorrect. Otherwise, mark as correct.\n\n {response}"
+    return f"The following is a conversation with an AI assistant. If the assistant mentions a tool, package or library that does not exist or that cannot be used for the programming task, please mark as incorrect. Otherwise, mark as correct. If the AI assistant responds that it doesn't know the answer, mark as correct.\n\n {response}"
     # return f"The following is a conversation with an AI assistant. Is the information provided by the AI correct? If the AI indicates that it doesn't know, then please mark as correct. Only mark as incorrect if the AI responds with a package or library that does not exist.\n\n {response}"
+
+def get_instruct_prompt(response):
+    return f"The following is a conversation with an AI assistant. If the assistant mentions a tool, package or library that does not exist or that cannot be used for the programming task, please mark as incorrect. Otherwise, mark as correct. If the AI assistant responds that it doesn't know the answer, mark as correct.\n\n {response}"
+
 
 def get_base_prompt(response):
     lines = response.split('\n')
@@ -45,7 +49,7 @@ def label(queries_and_responses, openai_model="gpt-4o-2024-08-06", model='', dou
         if 'chat' in args.model:
             message = get_chat_prompt(response)
         elif 'Instruct' in args.model:
-            pass
+            message = get_instruct_prompt(response)
         else:
             message = get_base_prompt(response)
 
@@ -69,7 +73,7 @@ def label(queries_and_responses, openai_model="gpt-4o-2024-08-06", model='', dou
                 model=openai_model,
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": f"Do any of the tools discussed here note exist? {response_dict['labelExplanation']}"},
+                    {"role": "user", "content": f"Do any of the tools discussed here not exist? {response_dict['labelExplanation']}"},
                 ],
                 temperature=0.1,
                 response_format=BooleanResponse,
