@@ -106,7 +106,11 @@ if __name__ == '__main__':
             input_file_path = get_input_file_path(args) + '.json'
             print(f'Running inference on {args.model} with {input_file_path} and coding prompt: {coding_prompt}')
             with open(input_file_path, 'r') as f:
-                tasks = json.load(f).get('tasks')
+                data = json.load(f)
+                try:
+                    tasks = data.get('tasks')
+                except:
+                    tasks = data
                 outputs = []
                 for task in tqdm(tasks):
                     prompt = coding_prompt + task.lower()
