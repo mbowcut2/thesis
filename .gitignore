@@ -2,3 +2,16 @@
 data/__pycache__/
 git_auth.sh
 __pycache__/
+data/factual/merged_dataset/Meta_Llama_3_1_70B_Instruct/old/acts.npz
+data/factual/merged_dataset/Meta_Llama_3_1_8B/old/acts.npz
+data/factual/merged_dataset/Meta_Llama_3_1_8B_Instruct/old/acts.npy
+data/factual/merged_dataset/Meta_Llama_3_1_70B_Instruct/.DS_Store
+data/factual/merged_dataset/Meta_Llama_3_1_70B/.DS_Store
+data/factual/merged_dataset/Meta_Llama_3_1_70B/old/acts.npz
+data/factual/merged_dataset/.DS_Store
+data/factual/.DS_Store
+data/.DS_Store
+__pycache__/got_utils.cpython-310.pyc
+Base_8B_cluster_1.md
+Base_8B_cluster_0.md
+__pycache__/got_utils.cpython-310.pyc
